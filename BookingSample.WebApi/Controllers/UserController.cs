@@ -8,19 +8,19 @@ using BookingSample.WebApi.Models.AuthSrv.Dto;
 namespace BookingSample.WebApi.Controllers
 {
     [EnableCors("*", "*", "*")]
-    [RoutePrefix("api/login")]
-    public class AdmLoginController : BaseApiController
+    [RoutePrefix("api/user")]
+    public class UserController : BaseApiController
     {
         private readonly IAuthService _authService;
         private readonly ILogAdapter _logAdapter;
 
-        public AdmLoginController(IAuthService authService, ILogAdapter logAdapter)
+        public UserController(IAuthService authService, ILogAdapter logAdapter)
         {
             _authService = authService;
             _logAdapter = logAdapter;
         }
 
-        [Route("Login")]
+        [Route("login")]
         [HttpPost]
         public IHttpActionResult Login(LoginDto loginInfo)
         {
