@@ -15,17 +15,19 @@ namespace BookingSample.WebApi.Models.AuthSrv
     public class AuthService : IAuthService
     {
         private const string Secret =
-            "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
+            "ZGIzT0lzaitCWEU5TlpEeTB0OFczVGNOZWtyRisyZC8xc0ZuV0c0SG5WOFRaWTMwaVRPZHRWV0pHOGFiV3ZCMUdsT2dKdVFaZGNGMkx1cW0vaGNjTXc9PQ==";
 
-        private const string SignalKey =
-            "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
+        private readonly string testPassword = "TestPass";
+        private readonly int testUserId = 100;
 
+
+        private readonly string testUsername = "TestUser";
 
         public string CreateTokenFor(string username, string password)
         {
-            if (username != "TestUser")
+            if (username != testUsername || password != testPassword)
                 throw new Exception("Invalid Username");
-            var token = GenerateToken(username, 100, DateTime.Now.AddMinutes(30));
+            var token = GenerateToken(username, testUserId, DateTime.Now.AddMinutes(30));
             return token;
         }
 
@@ -60,7 +62,7 @@ namespace BookingSample.WebApi.Models.AuthSrv
 
         public bool IsValidUser(string username, string password)
         {
-            return username == "Test" && password == "TestPass";
+            return username == testUsername && password == testPassword;
         }
 
         private static string GenerateToken(string username, int userId, DateTime expireTime)
@@ -77,7 +79,8 @@ namespace BookingSample.WebApi.Models.AuthSrv
                 }),
                 Expires = expireTime,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey),
-                    SecurityAlgorithms.HmacSha256Signature)
+                    SecurityAlgorithms.HmacSha256Signature),
+                NotBefore = DateTime.MinValue,
             };
 
 

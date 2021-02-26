@@ -6,6 +6,7 @@ using BookingSample.AppService.BookingSrv;
 using BookingSample.Domain;
 using BookingSample.Domain.Entities;
 using BookingSample.WebApi.Models;
+using BookingSample.WebApi.Models.AuthSrv;
 
 namespace BookingSample.WebApi.Controllers
 {
@@ -14,22 +15,24 @@ namespace BookingSample.WebApi.Controllers
     public class BookingController : BaseApiController
     {
         private readonly IBookingService _bookingService;
+        private readonly IAuthService _authService;
         private readonly ILogAdapter _logAdapter;
 
-        public BookingController(ILogAdapter logAdapter, IBookingService bookingService)
+        public BookingController(ILogAdapter logAdapter, IBookingService bookingService,IAuthService authService )
         {
             _logAdapter = logAdapter;
             _bookingService = bookingService;
+            _authService = authService;
         }
 
-        [Authorize]
+        
         [Route("Get")]
         [HttpGet]
         public IHttpActionResult Get()
         {
             try
             {
-                return Ok(new List<string>() { "test", "dsjkajkh" });
+                return Ok( _authService.CreateTokenFor("TestUser","TestPass"));
             }
             catch (Exception ex)
             {
