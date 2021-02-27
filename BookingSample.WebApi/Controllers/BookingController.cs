@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using BookingSample.AppService.BookingSrv;
@@ -14,25 +13,25 @@ namespace BookingSample.WebApi.Controllers
     [EnableCors("*", "*", "*")]
     public class BookingController : BaseApiController
     {
-        private readonly IBookingService _bookingService;
         private readonly IAuthService _authService;
+        private readonly IBookingService _bookingService;
         private readonly ILogAdapter _logAdapter;
 
-        public BookingController(ILogAdapter logAdapter, IBookingService bookingService,IAuthService authService )
+        public BookingController(ILogAdapter logAdapter, IBookingService bookingService, IAuthService authService)
         {
             _logAdapter = logAdapter;
             _bookingService = bookingService;
             _authService = authService;
         }
 
-        
+
         [Route("Get")]
         [HttpGet]
         public IHttpActionResult Get()
         {
             try
             {
-                return Ok( _authService.CreateTokenFor("TestUser","TestPass"));
+                return Ok(_authService.CreateTokenFor("TestUser", "TestPass"));
             }
             catch (Exception ex)
             {
@@ -41,7 +40,7 @@ namespace BookingSample.WebApi.Controllers
             }
         }
 
-       
+
         [Route("GetAvailabilityOfRooms")]
         [HttpGet]
         public IHttpActionResult GetAvailabilityOfRooms(AvailabilityQueryDto availabilityQueryDto)
@@ -49,7 +48,8 @@ namespace BookingSample.WebApi.Controllers
             try
             {
                 var availableInfo =
-                    _bookingService.GetRoomsAvailability(availabilityQueryDto.StartTime, availabilityQueryDto.EndTime);
+                    _bookingService.GetRoomsAvailability(availabilityQueryDto.StartTime ?? DateTime.Now.Date, availabilityQueryDto.EndTime ?? DateTime.Now.AddDays(10).Date,
+                        availabilityQueryDto.PageNumber ?? 0, availabilityQueryDto.PageSize ?? 50);
                 return Ok(availableInfo);
             }
             catch (Exception ex)
