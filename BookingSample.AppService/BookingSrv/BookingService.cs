@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using BookingSample.AppService.BookingSrv.Dto;
 using BookingSample.Domain.Entities;
@@ -11,7 +10,7 @@ namespace BookingSample.AppService.BookingSrv
     public interface IBookingService
     {
         void Add(Booking booking);
-        IEnumerable<RoomAvailableInfoDto> GetRoomsAvailability(DateTime starTime, DateTime endTime);
+        AvailableInfoDto GetRoomsAvailability(DateTime starTime, DateTime endTime, int pageNumber, int pageSize = 50);
     }
 
     public class BookingService : IBookingService
@@ -37,7 +36,8 @@ namespace BookingSample.AppService.BookingSrv
             _bookingRepository.Add(booking);
         }
 
-        public IEnumerable<RoomAvailableInfoDto> GetRoomsAvailability(DateTime starTime, DateTime endTime)
+        public AvailableInfoDto GetRoomsAvailability(DateTime starTime, DateTime endTime, int pageNumber,
+            int pageSize = 50)
         {
             var allRooms = _roomRepository.GetAll().ToList();
             var allReservation = _bookingRepository.GetAllReservationBetweenDates(starTime, endTime).ToList();
@@ -51,7 +51,12 @@ namespace BookingSample.AppService.BookingSrv
                         AvailablePlaces = room.Places - (enumerable.Any() ? enumerable.Sum(i => i.UsedPlace) : 0)
                     };
                 }).ToList();
-            return lstRoomAvailableInfoDto;
+
+            var selected = lstRoomAvailableInfoDto.Where(i => i.AvailablePlaces > 0).OrderBy(i => i.RoomId)
+                .Skip(pageNumber).Skip(pageNumber * pageSize)
+                .Take(pageSize).ToList();
+
+            return new AvailableInfoDto {AvailableItems = selected, TotalItems = lstRoomAvailableInfoDto.Count};
         }
     }
 }
