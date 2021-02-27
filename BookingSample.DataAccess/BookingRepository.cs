@@ -31,7 +31,7 @@ namespace BookingSample.DataAccess
         {
             using (var con = new SqlConnection(_connectionStringProvider.Provide()))
             {
-                return con.Query<Booking>("Booking_G_AllReservationsBetweenDates", new {starTime, endTime},
+                return con.Query<Booking>("Booking_G_AllReservationsBetweenDates", new { StartDate=starTime, EndDate=endTime},
                     commandType: CommandType.StoredProcedure).ToList();
             }
         }
@@ -40,7 +40,7 @@ namespace BookingSample.DataAccess
         {
             using (var con = new SqlConnection(_connectionStringProvider.Provide()))
             {
-                return con.Query<Booking>("Booking_G_ReservationForRoomBetweenDates", new {roomId, starTime, endTime},
+                return con.Query<Booking>("Booking_G_ReservationForRoomBetweenDates", new { RoomId=roomId, StartDate=starTime, EndDate=endTime},
                     commandType: CommandType.StoredProcedure).ToList();
             }
         }

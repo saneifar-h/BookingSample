@@ -50,13 +50,17 @@ namespace BookingSample.AppService.BookingSrv
                         RoomId = room.Id,
                         AvailablePlaces = room.Places - (enumerable.Any() ? enumerable.Sum(i => i.UsedPlace) : 0)
                     };
-                }).ToList();
+                }).Where(i => i.AvailablePlaces > 0).ToList();
 
-            var selected = lstRoomAvailableInfoDto.Where(i => i.AvailablePlaces > 0).OrderBy(i => i.RoomId)
+            var selected = lstRoomAvailableInfoDto.OrderBy(i => i.RoomId)
                 .Skip(pageNumber).Skip(pageNumber * pageSize)
                 .Take(pageSize).ToList();
 
-            return new AvailableInfoDto {AvailableItems = selected, TotalItems = lstRoomAvailableInfoDto.Count};
+            return new AvailableInfoDto
+            {
+                AvailableItems = selected, TotalItems = lstRoomAvailableInfoDto.Count,
+                TotalPages = (int) Math.Ceiling((decimal)lstRoomAvailableInfoDto.Count / pageSize)
+            };
         }
     }
 }

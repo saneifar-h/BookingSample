@@ -31,7 +31,7 @@ namespace BookingSample.WebApi.Controllers
         {
             try
             {
-                return Ok(_authService.CreateTokenFor("TestUser", "TestPass"));
+                return GetAvailabilityOfRooms(new AvailabilityQueryDto());
             }
             catch (Exception ex)
             {
