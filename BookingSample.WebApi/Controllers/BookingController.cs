@@ -14,15 +14,14 @@ namespace BookingSample.WebApi.Controllers
     [EnableCors("*", "*", "*")]
     public class BookingController : BaseApiController
     {
-        private readonly IAuthService _authService;
+      
         private readonly IBookingService _bookingService;
         private readonly ILogAdapter _logAdapter;
 
-        public BookingController(ILogAdapter logAdapter, IBookingService bookingService, IAuthService authService)
+        public BookingController(ILogAdapter logAdapter, IBookingService bookingService)
         {
             _logAdapter = logAdapter;
             _bookingService = bookingService;
-            _authService = authService;
         }
 
         [ApiAuthorize]
@@ -41,7 +40,7 @@ namespace BookingSample.WebApi.Controllers
             }
         }
 
-
+        [ApiAuthorize]
         [Route("GetAvailabilityOfRooms")]
         [HttpGet]
         public IHttpActionResult GetAvailabilityOfRooms(AvailabilityQueryDto availabilityQueryDto)
@@ -61,6 +60,7 @@ namespace BookingSample.WebApi.Controllers
             }
         }
 
+        [ApiAuthorize]
         [Route("Add")]
         [HttpPost]
         public IHttpActionResult Add(Booking booking)
