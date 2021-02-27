@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-jwt-authentication-example"
+    }
+  },
+  "defaultProject": "angular-jwt-authentication-example",
+  "cli": {
+    "analytics": false
+  }
 }

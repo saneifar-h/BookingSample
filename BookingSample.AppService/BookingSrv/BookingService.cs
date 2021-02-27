@@ -59,7 +59,8 @@ namespace BookingSample.AppService.BookingSrv
             return new AvailableInfoDto
             {
                 AvailableItems = selected, TotalItems = lstRoomAvailableInfoDto.Count,
-                TotalPages = (int) Math.Ceiling((decimal)lstRoomAvailableInfoDto.Count / pageSize)
+                TotalPages = (int) Math.Ceiling((decimal)lstRoomAvailableInfoDto.Count / pageSize),
+                CurrentPage = pageNumber
             };
         }
     }

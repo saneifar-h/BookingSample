@@ -54,7 +54,7 @@ namespace BookingSample.WebApi.Models.AuthSrv
                 return principal;
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }

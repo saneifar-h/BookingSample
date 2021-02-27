@@ -4,6 +4,7 @@ using System.Web.Http.Cors;
 using BookingSample.AppService.BookingSrv;
 using BookingSample.Domain;
 using BookingSample.Domain.Entities;
+using BookingSample.WebApi.Base;
 using BookingSample.WebApi.Models;
 using BookingSample.WebApi.Models.AuthSrv;
 
@@ -24,7 +25,7 @@ namespace BookingSample.WebApi.Controllers
             _authService = authService;
         }
 
-
+        [ApiAuthorize]
         [Route("Get")]
         [HttpGet]
         public IHttpActionResult Get()
@@ -48,7 +49,8 @@ namespace BookingSample.WebApi.Controllers
             try
             {
                 var availableInfo =
-                    _bookingService.GetRoomsAvailability(availabilityQueryDto.StartTime ?? DateTime.Now.Date, availabilityQueryDto.EndTime ?? DateTime.Now.AddDays(10).Date,
+                    _bookingService.GetRoomsAvailability(availabilityQueryDto.StartTime ?? DateTime.Now.Date,
+                        availabilityQueryDto.EndTime ?? DateTime.Now.AddDays(10).Date,
                         availabilityQueryDto.PageNumber ?? 0, availabilityQueryDto.PageSize ?? 50);
                 return Ok(availableInfo);
             }

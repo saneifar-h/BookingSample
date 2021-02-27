@@ -1,10 +1,15 @@
 ﻿<div class="card mt-4">
-    <h4 class="card-header">You're logged in with Angular 10 & JWT!!</h4>
+    <h4 class="card-header">Booking</h4>
     <div class="card-body">
-        <h6>Users from secure api end point</h6>
+        <h6>Get DefaultBookings</h6>
         <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
-        <ul *ngIf="users">
-            <li *ngFor="let user of users">{{user.firstName}} {{user.lastName}}</li>
+        <ul *ngIf="rooms">
+            <li *ngFor="let room of rooms.AvailableItems">Room:{{room.RoomId}} AvailableSpaces {{room.AvailablePlaces}}</li>
         </ul>
+        <div *ngIf="!loading" >
+            <h2>Total Item:{{rooms.TotalItems}}</h2>
+            <h2>Total Pages:{{rooms.TotalPages}}</h2>
+            <h2>Current Pages:{{rooms.CurrentPage}}</h2>
+        </div>
     </div>
 </div>
