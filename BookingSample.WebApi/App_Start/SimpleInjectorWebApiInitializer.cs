@@ -9,8 +9,9 @@ using BookingSample.WebApi.Models.AuthSrv;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
 using SimpleInjector.Lifestyles;
+using WebActivator;
 
-[assembly: WebActivator.PostApplicationStartMethod(typeof(SimpleInjectorWebApiInitializer), "Initialize")]
+[assembly: PostApplicationStartMethod(typeof(SimpleInjectorWebApiInitializer), "Initialize")]
 
 namespace BookingSample.WebApi
 {
@@ -21,17 +22,17 @@ namespace BookingSample.WebApi
         {
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
-            
+
             InitializeContainer(container);
 
             container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
-       
+
             container.Verify();
-            
+
             GlobalConfiguration.Configuration.DependencyResolver =
                 new SimpleInjectorWebApiDependencyResolver(container);
         }
-     
+
         private static void InitializeContainer(Container container)
         {
             container.Register<IConfigurationLookup, ConfigurationLookup>(Lifestyle.Scoped);

@@ -6,7 +6,6 @@ using BookingSample.Domain;
 using BookingSample.Domain.Entities;
 using BookingSample.WebApi.Base;
 using BookingSample.WebApi.Models;
-using BookingSample.WebApi.Models.AuthSrv;
 
 namespace BookingSample.WebApi.Controllers
 {
@@ -14,7 +13,6 @@ namespace BookingSample.WebApi.Controllers
     [EnableCors("*", "*", "*")]
     public class BookingController : BaseApiController
     {
-      
         private readonly IBookingService _bookingService;
         private readonly ILogAdapter _logAdapter;
 

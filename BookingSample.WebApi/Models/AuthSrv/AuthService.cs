@@ -33,7 +33,6 @@ namespace BookingSample.WebApi.Models.AuthSrv
 
         public ClaimsPrincipal GetPrincipal(string token)
         {
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
@@ -51,7 +50,6 @@ namespace BookingSample.WebApi.Models.AuthSrv
             };
             var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
             return principal;
-
         }
 
         public bool IsValidUser(string username, string password)
@@ -74,7 +72,7 @@ namespace BookingSample.WebApi.Models.AuthSrv
                 Expires = expireTime,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey),
                     SecurityAlgorithms.HmacSha256Signature),
-                NotBefore = DateTime.MinValue,
+                NotBefore = DateTime.MinValue
             };
 
 
