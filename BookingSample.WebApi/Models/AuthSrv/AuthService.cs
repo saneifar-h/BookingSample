@@ -33,31 +33,25 @@ namespace BookingSample.WebApi.Models.AuthSrv
 
         public ClaimsPrincipal GetPrincipal(string token)
         {
-            try
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
-                if (jwtToken == null)
-                    return null;
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
-                var symmetricKey = Convert.FromBase64String(Secret);
-
-                var validationParameters = new TokenValidationParameters
-                {
-                    RequireExpirationTime = true,
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
-                };
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
-                return principal;
-            }
-
-            catch (Exception ex)
-            {
+            if (jwtToken == null)
                 return null;
-            }
+
+            var symmetricKey = Convert.FromBase64String(Secret);
+
+            var validationParameters = new TokenValidationParameters
+            {
+                RequireExpirationTime = true,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
+            };
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+            return principal;
+
         }
 
         public bool IsValidUser(string username, string password)

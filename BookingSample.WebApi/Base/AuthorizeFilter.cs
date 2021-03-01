@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using BookingSample.WebApi.Models.AuthSrv;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BookingSample.WebApi.Base
 {
@@ -31,6 +32,7 @@ namespace BookingSample.WebApi.Base
             {
                 var encodedString = actionContext.Request.Headers.GetValues("Authorization").First();
                 var principal = _authService.GetPrincipal(encodedString);
+
                 var userId = principal.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value ?? "";
                 var userName = principal.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Name)?.Value ?? "";
                 if (userId != "100" || userName != "TestUser")
@@ -38,7 +40,11 @@ namespace BookingSample.WebApi.Base
                 Thread.CurrentPrincipal = principal;
                 return true;
             }
-            catch (Exception)
+            catch (SecurityTokenExpiredException)
+            {
+                return false;
+            }
+            catch (Exception ex)
             {
                 return false;
             }
